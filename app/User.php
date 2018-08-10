@@ -37,4 +37,14 @@ class User extends Authenticatable
     {
         return 'username';
     }
+
+    /**
+     * Relation between Users and Job requests.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function jobRequests()
+    {
+        return $this->hasMany(JobRequest::class);
+    }
 }

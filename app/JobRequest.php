@@ -14,7 +14,7 @@ class JobRequest extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'service_id', 'title', 'deadline', 'description', 'city', 'zip'];
+    protected $fillable = ['service_id', 'title', 'deadline', 'description', 'city', 'zip'];
 
     /**
      * Relation between JobRequests and Service.

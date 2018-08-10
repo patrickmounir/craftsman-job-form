@@ -36,7 +36,7 @@ class JobRequestController extends Controller
      */
     public function store(CreateJobRequest $request)
     {
-        $jobRequest = JobRequest::create($request->except('user_id')+['user_id' => \Auth::user()->id]);
+        $jobRequest = \Auth::user()->jobRequests()->create($request->except('user_id'));
 
         $transformedData = \Fractal::item($jobRequest, new JobRequestTransformer())->toArray();
 
