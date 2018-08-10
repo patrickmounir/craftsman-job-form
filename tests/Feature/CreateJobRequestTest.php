@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\JobRequest;
 use App\User;
 use Tests\TestCase;
 
@@ -10,6 +11,7 @@ class CreateJobRequestTest extends TestCase
     /** @test */
     function a_user_can_create_a_job_request()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
 
         $this->actingAs($user);
@@ -18,7 +20,7 @@ class CreateJobRequestTest extends TestCase
 
         $response = $this->post(route('createJobRequest'), $jobRequestData);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $jobRequestData['user_id'] = $user->id;
 
