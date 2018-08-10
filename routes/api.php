@@ -17,7 +17,7 @@ Route::group(['prefix' => 'job-requests'], function () {
 
     Route::get('/', 'JobRequestController@index')->name('listJobRequests');
 
-    Route::get('/my', 'JobRequestController@myRequests')->name('listMyRequests');
+    Route::get('/mine', 'JobRequestController@myRequests')->name('listMyRequests');
 
     Route::get("/{jobRequest}", 'JobRequestController@show')->name('showRequest');
 });
