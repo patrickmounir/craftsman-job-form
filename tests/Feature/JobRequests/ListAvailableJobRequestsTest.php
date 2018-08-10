@@ -37,7 +37,7 @@ class ListAvailableJobRequestsTest extends TestCase
 
         $requestCreatedMoreThan30DaysAgo = factory(JobRequest::class)->create([
             'title' => 'More than 30 Days',
-            'updated_at' => Carbon::today()->subDays(31)
+            'created_at' => Carbon::today()->subDays(31)
         ]);
 
         $response = $this->hitListJobRequestEndpoint();
