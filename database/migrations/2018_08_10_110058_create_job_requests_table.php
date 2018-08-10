@@ -15,6 +15,24 @@ class CreateJobRequestsTable extends Migration
     {
         Schema::create('job_requests', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('title');
+            $table->text('description');
+            $table->string('city');
+            $table->date('deadline');
+
+            $table->unsignedInteger('service_id');
+            $table->unsignedInteger('user_id');
+
+            $table->foreign('service_id')
+                ->on('services')
+                ->references('id')
+                ->onDelete('cascade');
+
+            $table->foreign('user_id')
+                ->on('users')
+                ->references('id')
+                ->onDelete('cascade');
+
             $table->timestamps();
         });
     }
