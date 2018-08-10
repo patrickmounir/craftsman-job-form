@@ -11,7 +11,7 @@ $factory->define(App\JobRequest::class, function (Faker $faker) {
             return factory(\App\Service::class)->create()->id;
         },
 
-        'title' => $faker->word,
+        'title' => 'Five Letters',
         'description' => $faker->sentence,
         'zip' => $faker->postcode,
         'city' => $faker->city,

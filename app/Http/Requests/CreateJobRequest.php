@@ -24,12 +24,12 @@ class CreateJobRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'description' => 'required',
-            'zip' => 'required',
-            'city' => 'required',
-            'deadline' => 'required',
-            'service_id' => 'required',
+            'title' => 'required|string|min:5|max:50',
+            'description' => 'required|string',
+            'zip' => 'required|numeric',
+            'city' => 'required|string',
+            'deadline' => 'required|date_format:Y-m-d',
+            'service_id' => 'required|integer',
         ];
     }
 }

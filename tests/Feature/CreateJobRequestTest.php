@@ -26,6 +26,30 @@ class CreateJobRequestTest extends TestCase
     }
 
     /**
+     * A data provider for invalid field values.
+     *
+     * @return array
+     */
+    public function invalidFieldsValue()
+    {
+        return [
+            ['title', 2],
+            ['title', 'as'],
+            ['title', 'long stringlong stringlong stringlong stringlong string'],
+            ['description', 2],
+            ['zip', false],
+            ['zip', 'string'],
+            ['city', false],
+            ['city', 2],
+            ['deadline', 'string'],
+            ['deadline', 2],
+            ['deadline', '20-05-2018'],
+            ['service_id', false],
+            ['service_id', 'string'],
+        ];
+    }
+
+    /**
      * Sends post request to create job request.
      *
      * @param $jobRequestData
@@ -84,6 +108,30 @@ class CreateJobRequestTest extends TestCase
         $jobRequestData = factory(JobRequest::class)->make(['user_id' => null])->toArray();
 
         unset($jobRequestData[$field]);
+
+        $response = $this->hitCreateJobRequestEndpoint($jobRequestData);
+
+        $this->assertValidationError($response, $field);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider invalidFieldsValue
+     *
+     * @param $field
+     *
+     * @param $value
+     */
+    function a_user_cannot_create_a_job_request_with_invalid_values($field, $value)
+    {
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user);
+
+        $jobRequestData = factory(JobRequest::class)->make(['user_id' => null])->toArray();
+
+        $jobRequestData[$field] = $value;
 
         $response = $this->hitCreateJobRequestEndpoint($jobRequestData);
 
