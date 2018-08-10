@@ -11,6 +11,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        \App\Service::create(['id' => 804040, 'name' => 'Sonstige Umzugsleistungen']);
+        \App\Service::create(['id' => 802030, 'name' => 'Abtransport, Entsorgung und Entrümpelung']);
+        \App\Service::create(['id' => 411070, 'name' => 'Fensterreinigung']);
+        \App\Service::create(['id' => 402020, 'name' => 'Holzdielen schleifen']);
+        \App\Service::create(['id' => 108140, 'name' => 'Kellersanierung']);
     }
 }
