@@ -12,5 +12,8 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['prefix' => 'job-requests'], function () {
+    Route::post('/', 'JobRequestController@store')->name('createJobRequest');
 
-Route::post('job-requests', 'JobRequestController@store')->name('createJobRequest');
+    Route::get('/', 'JobRequestController@index')->name('listJobRequests');
+});

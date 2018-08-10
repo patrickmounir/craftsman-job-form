@@ -3,18 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateJobRequest;
+use App\Http\Responses\ResponsesInterface;
 use App\JobRequest;
+use App\Providers\ApiServiceProvider;
 use App\Transformers\JobRequestTransformer;
 use Illuminate\Http\Request;
 
 class JobRequestController extends Controller
 {
     /**
-     * JobRequestController constructor.
+     * @var ResponsesInterface $responder
      */
-    public function __construct()
+    private $responder;
+
+    /**
+     * JobRequestController constructor.
+     *
+     * @param ResponsesInterface $responses
+     */
+    public function __construct(ResponsesInterface $responses)
     {
         $this->middleware('auth:api');
+        $this->responder = $responses;
     }
 
     /**
@@ -30,6 +40,23 @@ class JobRequestController extends Controller
 
         $transformedData = \Fractal::item($jobRequest, new JobRequestTransformer())->toArray();
 
-        return response()->json($transformedData)->setStatusCode(201);
+        return $this->responder->setStatusCode(201)->respond($transformedData);
+    }
+
+    /**
+     * Handles request to list job requests.
+     *
+     * @return $this
+     */
+    public function index()
+    {
+        $jobRequestPaginate = JobRequest::where('user_id', '!=', \Auth::user()->id)
+                        ->paginate(ApiServiceProvider::$itemsPerPage);
+
+        $transformedData = \Fractal::collection($jobRequestPaginate->items(), new JobRequestTransformer())
+            ->parseIncludes(['user'])
+            ->toArray();
+
+        return $this->responder->respondWithPagination($jobRequestPaginate, $transformedData);
     }
 }
