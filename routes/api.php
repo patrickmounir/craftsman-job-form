@@ -21,3 +21,5 @@ Route::group(['prefix' => 'job-requests'], function () {
 
     Route::get("/{jobRequest}", 'JobRequestController@show')->name('showRequest');
 });
+
+Route::get('/services', 'ServiceController@index')->name('listServices');

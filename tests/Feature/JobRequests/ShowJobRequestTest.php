@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\JobRequests;
 
 use App\JobRequest;
 use App\Transformers\JobRequestTransformer;

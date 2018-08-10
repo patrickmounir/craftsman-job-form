@@ -1,13 +1,11 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\JobRequests;
 
 use App\JobRequest;
 use App\Transformers\JobRequestTransformer;
 use App\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ListMyRequestsTest extends TestCase
 {

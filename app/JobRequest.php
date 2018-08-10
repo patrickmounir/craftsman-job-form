@@ -17,7 +17,7 @@ class JobRequest extends Model
     protected $fillable = ['user_id', 'service_id', 'title', 'deadline', 'description', 'city', 'zip'];
 
     /**
-     * Relation between JobRequest and Service.
+     * Relation between JobRequests and Service.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -27,7 +27,7 @@ class JobRequest extends Model
     }
 
     /**
-     * Relation between JobRequest and User.
+     * Relation between JobRequests and User.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
