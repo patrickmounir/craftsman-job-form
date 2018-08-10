@@ -9,6 +9,23 @@ use Tests\TestCase;
 class CreateJobRequestTest extends TestCase
 {
     /**
+     * A data provider for required fields for creating job request.
+     *
+     * @return array
+     */
+    public function requiredFields()
+    {
+        return [
+            ['title'],
+            ['description'],
+            ['zip'],
+            ['city'],
+            ['deadline'],
+            ['service_id'],
+        ];
+    }
+
+    /**
      * Sends post request to create job request.
      *
      * @param $jobRequestData
@@ -49,5 +66,27 @@ class CreateJobRequestTest extends TestCase
         $response = $this->hitCreateJobRequestEndpoint($jobRequestData);
 
         $response->assertStatus(401);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider requiredFields
+     *
+     * @param $field
+     */
+    function a_user_cannot_create_a_job_request_without_required_fields($field)
+    {
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user);
+
+        $jobRequestData = factory(JobRequest::class)->make(['user_id' => null])->toArray();
+
+        unset($jobRequestData[$field]);
+
+        $response = $this->hitCreateJobRequestEndpoint($jobRequestData);
+
+        $this->assertValidationError($response, $field);
     }
 }

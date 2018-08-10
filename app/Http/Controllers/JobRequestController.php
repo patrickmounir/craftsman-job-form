@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateJobRequest;
 use App\JobRequest;
 use App\Transformers\JobRequestTransformer;
 use Illuminate\Http\Request;
@@ -19,11 +20,11 @@ class JobRequestController extends Controller
     /**
      * Handles request to store a job request.
      *
-     * @param Request $request
+     * @param CreateJobRequest $request
      *
      * @return $this
      */
-    public function store(Request $request)
+    public function store(CreateJobRequest $request)
     {
         $jobRequest = JobRequest::create($request->except('user_id')+['user_id' => \Auth::user()->id]);
 
