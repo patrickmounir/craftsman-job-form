@@ -78,4 +78,18 @@ class JobRequestController extends Controller
 
         return $this->responder->respondWithPagination($jobRequestPaginate, $transformedData);
     }
+
+    /**
+     * Handles request to show a request.
+     *
+     * @param JobRequest $jobRequest
+     *
+     * @return $this
+     */
+    public function show(JobRequest $jobRequest)
+    {
+        $transformedData = \Fractal::item($jobRequest, new JobRequestTransformer())->parseIncludes(['user'])->toArray();
+
+        return $this->responder->respond($transformedData);
+    }
 }
