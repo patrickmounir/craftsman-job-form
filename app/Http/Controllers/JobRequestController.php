@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateJobRequest;
 use App\Http\Responses\ResponsesInterface;
 use App\JobRequest;
+use App\Providers\ApiServiceProvider;
 use App\Queries\AvailableJobRequest;
 use App\Transformers\JobRequestTransformer;
 
@@ -56,6 +57,23 @@ class JobRequestController extends Controller
 
         $transformedData = \Fractal::collection($jobRequestPaginate->items(), new JobRequestTransformer())
             ->parseIncludes(['user'])
+            ->toArray();
+
+        return $this->responder->respondWithPagination($jobRequestPaginate, $transformedData);
+    }
+
+    /**
+     * Handles request to list the logged in user's job requests.
+     *
+     * @return $this
+     *
+     */
+    public function myRequests()
+    {
+        $jobRequestPaginate = JobRequest::where('user_id', \Auth::user()->id)
+            ->paginate(ApiServiceProvider::$itemsPerPage);
+
+        $transformedData = \Fractal::collection($jobRequestPaginate->items(), new JobRequestTransformer())
             ->toArray();
 
         return $this->responder->respondWithPagination($jobRequestPaginate, $transformedData);

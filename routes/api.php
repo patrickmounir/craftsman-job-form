@@ -16,4 +16,6 @@ Route::group(['prefix' => 'job-requests'], function () {
     Route::post('/', 'JobRequestController@store')->name('createJobRequest');
 
     Route::get('/', 'JobRequestController@index')->name('listJobRequests');
+
+    Route::get('/my', 'JobRequestController@myRequests')->name('listMyRequests');
 });
