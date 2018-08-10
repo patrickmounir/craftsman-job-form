@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidGermanZip;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateJobRequest extends FormRequest
@@ -26,7 +27,7 @@ class CreateJobRequest extends FormRequest
         return [
             'title' => 'required|string|min:5|max:50',
             'description' => 'required|string',
-            'zip' => 'required|numeric',
+            'zip' => ['required', 'numeric', new ValidGermanZip],
             'city' => 'required|string',
             'deadline' => 'required|date_format:Y-m-d',
             'service_id' => 'required|integer',

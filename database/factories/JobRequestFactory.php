@@ -13,7 +13,7 @@ $factory->define(App\JobRequest::class, function (Faker $faker) {
 
         'title' => 'Five Letters',
         'description' => $faker->sentence,
-        'zip' => $faker->postcode,
+        'zip' => 10115,
         'city' => $faker->city,
         'deadline' => $faker->dateTimeBetween('+1 days', '+30 days')->format('Y-m-d'),
     ];

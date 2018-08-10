@@ -137,4 +137,19 @@ class CreateJobRequestTest extends TestCase
 
         $this->assertValidationError($response, $field);
     }
+
+
+    /** @test */
+    function a_user_cannot_create_a_job_request_with_invalid_german_zip_code()
+    {
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user);
+
+        $jobRequestData = factory(JobRequest::class)->make(['user_id' => null, 'zip' => '020'])->toArray();
+
+        $response = $this->hitCreateJobRequestEndpoint($jobRequestData);
+
+        $this->assertValidationError($response, 'zip');
+    }
 }
