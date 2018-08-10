@@ -7,6 +7,7 @@ use App\Http\Responses\ResponsesInterface;
 use App\JobRequest;
 use App\Providers\ApiServiceProvider;
 use App\Transformers\JobRequestTransformer;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class JobRequestController extends Controller
@@ -51,6 +52,7 @@ class JobRequestController extends Controller
     public function index()
     {
         $jobRequestPaginate = JobRequest::where('user_id', '!=', \Auth::user()->id)
+                        ->where('deadline', '>=', Carbon::today()->subDays(30)->format('Y-m-d'))
                         ->paginate(ApiServiceProvider::$itemsPerPage);
 
         $transformedData = \Fractal::collection($jobRequestPaginate->items(), new JobRequestTransformer())
