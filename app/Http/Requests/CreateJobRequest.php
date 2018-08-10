@@ -30,7 +30,7 @@ class CreateJobRequest extends FormRequest
             'zip' => ['required', 'numeric', new ValidGermanZip],
             'city' => 'required|string',
             'deadline' => 'required|date_format:Y-m-d',
-            'service_id' => 'required|integer',
+            'service_id' => 'required|integer|exists:services,id',
         ];
     }
 }

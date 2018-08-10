@@ -152,4 +152,19 @@ class CreateJobRequestTest extends TestCase
 
         $this->assertValidationError($response, 'zip');
     }
+
+    /** @test */
+    function a_user_cannot_create_a_job_request_with_non_existing_service()
+    {
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user);
+
+        $jobRequestData = factory(JobRequest::class)->make(['user_id' => null])->toArray();
+
+        $jobRequestData['service_id'] = 2;
+        $response = $this->hitCreateJobRequestEndpoint($jobRequestData);
+
+        $this->assertValidationError($response, 'service_id');
+    }
 }
