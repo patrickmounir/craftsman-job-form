@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Filterable;
 
 class JobRequest extends Model
 {
+    use Filterable;
+
     /**
      * Fields allowed for mass assignment.
      *

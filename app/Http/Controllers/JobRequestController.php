@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\JobRequestFilter;
 use App\Http\Requests\CreateJobRequest;
 use App\Http\Responses\ResponsesInterface;
 use App\JobRequest;
@@ -47,12 +48,15 @@ class JobRequestController extends Controller
     /**
      * Handles request to list job requests.
      *
+     * @param JobRequestFilter $filter
+     *
      * @return $this
      */
-    public function index()
+    public function index(JobRequestFilter $filter)
     {
         $jobRequestPaginate = JobRequest::where('user_id', '!=', \Auth::user()->id)
-                        ->where('updated_at', '>=', Carbon::today()->subDays(30)->format('Y-m-d'))
+                        ->whereDate('updated_at', '>=', Carbon::today()->subDays(30)->format('Y-m-d'))
+                        ->filter($filter)
                         ->paginate(ApiServiceProvider::$itemsPerPage);
 
         $transformedData = \Fractal::collection($jobRequestPaginate->items(), new JobRequestTransformer())

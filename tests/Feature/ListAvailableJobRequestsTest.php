@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\JobRequest;
+use App\Service;
 use App\Transformers\JobRequestTransformer;
 use App\User;
 use Carbon\Carbon;
@@ -40,6 +41,32 @@ class ListAvailableJobRequestsTest extends TestCase
         $response->assertJsonMissing([
             'id' => $requestCreatedMoreThan30DaysAgo->id,
             'title' => $requestCreatedMoreThan30DaysAgo->title,
+        ]);
+    }
+
+    /** @test */
+    function a_user_can_filter_requests_by_service()
+    {
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user);
+
+        $service = factory(Service::class)->create();
+
+        $requestsToBeSeen = factory(JobRequest::class, 2)->create(['service_id' => $service->id]);
+
+        $requestsTobeFiltered= factory(JobRequest::class)->create(['title' => 'Job to be filtered']);
+
+        $response = $this->get(route('listJobRequests')."?service={$service->id}");
+
+        $response->assertStatus(200);
+
+        $response->assertJson(fractal($requestsToBeSeen, new JobRequestTransformer())
+            ->parseIncludes('user')->toArray());
+
+        $response->assertJsonMissing([
+            'id' => $requestsTobeFiltered->id,
+            'title' => $requestsTobeFiltered->title,
         ]);
     }
 }
