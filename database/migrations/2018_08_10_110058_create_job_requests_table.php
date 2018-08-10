@@ -18,6 +18,7 @@ class CreateJobRequestsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('city');
+            $table->string('zip');
             $table->date('deadline');
 
             $table->unsignedInteger('service_id');
