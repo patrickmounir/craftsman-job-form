@@ -8,6 +8,21 @@ use Illuminate\Http\Request;
 
 class JobRequestController extends Controller
 {
+    /**
+     * JobRequestController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
+    /**
+     * Handles request to store a job request.
+     *
+     * @param Request $request
+     *
+     * @return $this
+     */
     public function store(Request $request)
     {
         $jobRequest = JobRequest::create($request->except('user_id')+['user_id' => \Auth::user()->id]);
