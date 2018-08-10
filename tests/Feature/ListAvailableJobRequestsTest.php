@@ -23,7 +23,7 @@ class ListAvailableJobRequestsTest extends TestCase
 
         $requestCreatedMoreThan30DaysAgo = factory(JobRequest::class)->create([
             'title' => 'More than 30 Days',
-            'deadline' => Carbon::today()->subDays(31)
+            'updated_at' => Carbon::today()->subDays(31)
         ]);
 
         $response = $this->get(route('listJobRequests'));
