@@ -18,4 +18,16 @@ class JobRequestFilter extends QueryFilter
     {
         return $this->builder->where('service_id', $value);
     }
+
+    /**
+     * Filters Job requests by region.
+     *
+     * @param $value
+     *
+     * @return Builder
+     */
+    public function region($value)
+    {
+        return $this->builder->where('city', $value);
+    }
 }

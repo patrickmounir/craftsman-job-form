@@ -11,6 +11,19 @@ use Tests\TestCase;
 
 class ListAvailableJobRequestsTest extends TestCase
 {
+    /**
+     * Sends get request to get list all available job requests.
+     *
+     * @param string $query
+     *
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    private function hitListJobRequestEndpoint($query = ''): \Illuminate\Foundation\Testing\TestResponse
+    {
+        $response = $this->get(route('listJobRequests') . $query);
+        return $response;
+    }
+
     /** @test */
     function a_user_can_see_all_job_requests_but_his_own_requests()
     {
@@ -27,7 +40,7 @@ class ListAvailableJobRequestsTest extends TestCase
             'updated_at' => Carbon::today()->subDays(31)
         ]);
 
-        $response = $this->get(route('listJobRequests'));
+        $response = $this->hitListJobRequestEndpoint();
 
         $response->assertStatus(200);
 
@@ -57,7 +70,34 @@ class ListAvailableJobRequestsTest extends TestCase
 
         $requestsTobeFiltered= factory(JobRequest::class)->create(['title' => 'Job to be filtered']);
 
-        $response = $this->get(route('listJobRequests')."?service={$service->id}");
+        $response = $this->hitListJobRequestEndpoint("?service={$service->id}");
+
+        $response->assertStatus(200);
+
+        $response->assertJson(fractal($requestsToBeSeen, new JobRequestTransformer())
+            ->parseIncludes('user')->toArray());
+
+        $response->assertJsonMissing([
+            'id' => $requestsTobeFiltered->id,
+            'title' => $requestsTobeFiltered->title,
+        ]);
+    }
+
+    /** @test */
+    function a_user_can_filter_requests_by_region()
+    {
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user);
+
+        $requestsToBeSeen = factory(JobRequest::class, 2)->create(['city' => 'Berlin']);
+
+        $requestsTobeFiltered= factory(JobRequest::class)->create([
+            'title' => 'Job to be filtered',
+            'city' => 'Hamburg'
+        ]);
+
+        $response = $this->hitListJobRequestEndpoint("?region={$requestsToBeSeen[0]->city}");
 
         $response->assertStatus(200);
 
