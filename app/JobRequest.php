@@ -12,4 +12,14 @@ class JobRequest extends Model
      * @var array
      */
     protected $fillable = ['user_id', 'service_id', 'title', 'deadline', 'description', 'city', 'zip'];
+
+    /**
+     * Relation between JobRequest and Service.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
 }
