@@ -109,4 +109,12 @@ class ListAvailableJobRequestsTest extends TestCase
             'title' => $requestsTobeFiltered->title,
         ]);
     }
+
+    /** @test */
+    function a_guest_cannot_see_all_job_requests_but_his_own_requests()
+    {
+        $response = $this->hitListJobRequestEndpoint();
+
+        $response->assertStatus(401);
+    }
 }
